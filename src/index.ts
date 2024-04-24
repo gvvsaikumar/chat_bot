@@ -9,9 +9,10 @@ const server = app.listen(PORT, () =>
   console.log(`💬 server on port localhost:${PORT} `)
 );
 
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.resolve("./public")));
 let socketsConnected = new Set()
 const io: Server = new Server(server);
+
 
 io.on("connection", (socket: Socket) => {
   onConnected(socket);
@@ -36,3 +37,7 @@ function onConnected(socket: Socket): void {
     socket.broadcast.emit('feedback',data)
   })
 }
+
+app.get('/',(req,res)=>{
+  res.sendFile("/public/index.html");
+})
